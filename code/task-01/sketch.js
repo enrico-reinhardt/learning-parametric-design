@@ -10,5 +10,5 @@ function setup() {
 // THEN > DRAW > LOOP
 function draw() {
     background(255, 128, 0)
-    rect(200, 0, 10, 400)
+    rect(250, 0, 10, 400)
 }
