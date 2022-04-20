@@ -30,9 +30,10 @@ function draw() {
             line(
                 x * 8,
                 y * 8,
-                x * random(8, 40) + random(400, 420),
-                y * random(8, 40) + random(400, 420)
+                x * random(8, 7) + random(400, 400),
+                y * random(8, 7) + random(400, 400)
             )
         }
     }
+    // noLoop()
 }
