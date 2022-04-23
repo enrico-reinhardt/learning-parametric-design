@@ -35,5 +35,5 @@ function draw() {
             )
         }
     }
-    // noLoop()
+    noLoop()
 }
