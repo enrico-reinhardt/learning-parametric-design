@@ -18,16 +18,16 @@ function windowResized() {
 
 // VARIABLES
 const gap = 32,
-    size = 64,
-    scale = 1
+    size = 80,
+    scale = 1.25
 
 let windowW = window.innerWidth,
     windowH = window.innerHeight,
     arrayX = [windowW / 2],
     arrayY = [windowH / 2],
-    arrayR = [0],
-    arrayG = [90],
-    arrayB = [70],
+    arrayR = [100],
+    arrayG = [50],
+    arrayB = [100],
     activeMouse = false
 
 // DRAW
@@ -67,7 +67,7 @@ function draw() {
 
         // add random color variation to previous color
         // RED
-        arrayR[i] = currentR + Math.round(random(-2, 2))
+        arrayR[i] = currentR + Math.round(random(-4, 4))
         if (currentR <= 0) {
             arrayR[i] = currentR + 10
         }
@@ -75,7 +75,7 @@ function draw() {
             arrayR[i] = currentR - 10
         }
         // GREEN
-        arrayG[i] = currentG + Math.round(random(-3, 3))
+        arrayG[i] = currentG + Math.round(random(-1, 1))
         if (currentG <= 0) {
             arrayG[i] = currentG + 10
         }
@@ -83,7 +83,7 @@ function draw() {
             arrayG[i] = currentG - 10
         }
         // BLUE
-        arrayB[i] = currentB + Math.round(random(-2, 2))
+        arrayB[i] = currentB + Math.round(random(-4, 4))
         if (currentB <= 0) {
             arrayB[i] = currentB + 10
         }
