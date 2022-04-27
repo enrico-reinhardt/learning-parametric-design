@@ -1,5 +1,5 @@
 // PRELOAD ASSETS
-// LOAD ASSETS > WHEN LOADED EXECUTE SETUP
+// LOAD ASSETS > WHEN LOADED RUN SETUP
 function preload() {}
 
 // SETUP > ONCE
@@ -7,20 +7,9 @@ function setup() {
     createCanvas(400, 400)
 }
 
-// THEN > DRAW > LOOP
+// DRAW > LOOP
 function draw() {
     background(220, 220, 255)
-
-    // strokeWeight(2)
-    // stroke(220, 200, 255)
-    // for (let a = 0; a < 90; a++) {
-    //     for (let i = 1; i < 90; i++) {
-    //         strokeWeight((a / 4) * (i / 16))
-    //         point(i * 8 - 40, a * 8 + 40)
-    //     }
-    // }
-    // strokeWeight(0)
-    // stroke(0, 0)
 
     for (let i = 0; i < 50; i++) {
         fill(i * 15, i * 5, i * 5, i * 0.2)
