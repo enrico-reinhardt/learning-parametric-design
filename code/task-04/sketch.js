@@ -17,8 +17,8 @@ function windowResized() {
 }
 
 // VARIABLES
-const gap = 32,
-    size = 80,
+const gap = 24,
+    size = 50,
     scale = 1.25
 
 let windowW = window.innerWidth,
