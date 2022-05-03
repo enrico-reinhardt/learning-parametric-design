@@ -4,9 +4,9 @@ function preload() {}
 // VARIABLES
 const sketchWidth = window.innerWidth;
 const sketchHeight = window.innerHeight;
-const shapeCount = 120;
-const size = 120;
-const treshold = 50;
+const shapeCount = 400;
+const size = 240;
+const scaleTreshold = 1.2;
 let shapes = [];
 
 // SETUP
@@ -17,8 +17,8 @@ function setup() {
         shapes.push({
             x: size / 2,
             y: size / 2,
-            scale: count * 0.05,
-            rotation: count * 0.0001,
+            scale: (scaleTreshold / shapeCount) * count,
+            rotation: (360 / shapeCount) * count,
         });
     }
     console.log(shapes);
@@ -34,26 +34,30 @@ function draw() {
     background(255, 255, 255);
     noFill();
     stroke(0);
-    strokeWeight(0.1);
+    strokeWeight(0.5);
 
     translate(windowWidth / 2, windowHeight / 2);
     for (let i = 0; i < shapes.length; i++) {
         push();
+
         scale(shapes[i].scale);
+        if (shapes[i].scale > 20) {
+            shapes[i].scale--;
+        }
+
         rotate(shapes[i].rotation);
         translate(-size, -size);
+        // strokeWeight(i * 0.1);
         square(shapes[i].x, shapes[i].y, size, shapes[i].roundness);
-        shapes[i].rotation += i * 0.0001;
-        if (shapes < treshold) {
-            shapes[i].scale += i * 0.005;
-        } else {
-            shapes[i].scale -= 0.001;
+
+        shapes[i].rotation += 0.001;
+
+        if (shapes[i].scale < scaleTreshold) {
+            shapes[i].scale *= 1.0005;
+        } else if (shapes[i].scale > scaleTreshold) {
+            shapes[i].scale *= -0.5;
         }
-        // shapes[i].scale -= i * 0.05;
+
         pop();
-        // beginShape();
-        // vertex();
-        // endShape(CLOSE);
     }
-    // console.log(shapes);
 }
