@@ -6,7 +6,7 @@ const sketchWidth = window.innerWidth;
 const sketchHeight = window.innerHeight;
 const shapeCount = 400;
 const size = 240;
-const scaleTreshold = 1.2;
+const scaleTreshold = 1;
 let shapes = [];
 
 // SETUP
