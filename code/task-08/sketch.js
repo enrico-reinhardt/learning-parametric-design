@@ -10,6 +10,7 @@ const scaleTreshold = 8;
 const scrollSteps = 12000;
 let shapes = [];
 
+// Generate Scroll Container
 const scroller = document.createElement('div');
 scroller.classList.add('scroller');
 document.body.append(scroller);
@@ -22,7 +23,7 @@ function setup() {
     cnv.id('p5cnv');
     cnv.position(0, 0, 'fixed');
 
-    // Generate Initial Shapes
+    // Generate Initial State of Shapes
     for (let count = 0; count < shapeCount; count++) {
         shapes.push({
             scale: (scaleTreshold / shapeCount) * count,
@@ -33,26 +34,24 @@ function setup() {
 
 // RESIZE
 function windowResized() {
-    // push();
     resizeCanvas(windowWidth, windowHeight);
-    // pop();
 }
 
 // DRAW
 function draw() {
-    // noLoop();
     background(255, 255, 255);
     noFill();
     strokeWeight(0.4);
     stroke(0);
 
+    // Initiate Scroll Variables
     let scrollY = Math.round(window.scrollY);
     let factor = scrollY / 10;
 
+    // Show Scroll Down Text
     if (scrollY < 400) {
         fill(0, 0, 0, 255 - scrollY);
         push();
-        // translate(-50, -50);
         textSize(18);
         textAlign(CENTER, CENTER);
         text('Scroll down', windowWidth / 2, windowHeight / 2);
@@ -66,15 +65,12 @@ function draw() {
 
         rotate(shapes[i].rotation + scrollY / 900);
         translate(mouseX / 10 - factor, mouseY / 10 - factor);
-        // strokeWeight(i * 0.1);
-
         shapes[i].rotation += 0.0005;
 
         if (shapes[i].scale < scaleTreshold || shapes[i].scale < 0) {
             shapes[i].scale += 0.05;
         } else if (shapes[i].scale > 0) {
             shapes[i].scale *= -1.005;
-            // console.log(shapes[i].scale + 'growing');
         }
         shapes[i].scale = Math.round(shapes[i].scale);
         scale(shapes[i].scale);
