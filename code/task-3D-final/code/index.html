@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Anaglyph</title>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+        />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- IMPORT POLYFILL -->
+        <script
+            async
+            src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
+        ></script>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "../build/three.module.js"
+                }
+            }
+        </script>
+
+        <script type="module">
+            // THREE + EFFECT
+            import * as THREE from 'three';
+            import { AnaglyphEffect } from './jsm/effects/AnaglyphEffect.js';
+
+            // GLOBAL VAR
+            let container;
+            let camera;
+            let cameraparams = { x: 0, y: 0, z: 0, rx: 0, ry: 0, rz: 0 };
+            let scene;
+            let renderer;
+            let effect;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const mouseX = 0;
+            const mouseY = 0;
+
+            // DEGREES TO RADIANS
+            function radians(degrees) {
+                return (degrees * Math.PI) / 180;
+            }
+
+            // RUN ANIMATION
+            init();
+            animate();
+
+            function init() {
+                // INIT CONTAINER
+                container = document.createElement('div');
+                document.body.appendChild(container);
+
+                //INIT SCENE WITH CAMERA
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(
+                    60,
+                    window.innerWidth / window.innerHeight,
+                    0.01,
+                    100
+                );
+
+                // ON MOUSEMOVE
+                event = window.event;
+                document.addEventListener('mousemove', (event) => {
+                    camera.position.z = event.screenX / 100 - 40;
+                    camera.position.y = event.screenY / 100 - 20;
+                });
+
+                // ON KEYDOWN
+                document.addEventListener('keydown', logKey);
+                function logKey(e) {
+                    // ARROWS
+                    if (e.code === 'ArrowUp') {
+                        cameraparams.y += 0.5;
+                    }
+
+                    if (e.code === 'ArrowDown') {
+                        cameraparams.y -= 0.5;
+                    }
+
+                    if (e.code === 'ArrowRight') {
+                        cameraparams.z += 0.5;
+                    }
+
+                    if (e.code === 'ArrowLeft') {
+                        cameraparams.z -= 0.5;
+                    }
+
+                    // WASD
+                    if (e.code === 'KeyW') {
+                        cameraparams.ry += radians(10);
+                    }
+
+                    if (e.code === 'KeyS') {
+                        cameraparams.ry -= radians(10);
+                    }
+
+                    if (e.code === 'KeyA') {
+                        cameraparams.rx += radians(10);
+                    }
+
+                    if (e.code === 'KeyD') {
+                        cameraparams.rx -= radians(10);
+                    }
+                    console.log(e.code);
+                }
+
+                camera.lookAt(0, 0, 0);
+                camera.focalLength = 3;
+
+                // DRAW CUBES
+                for (let ind = 0; ind < 100; ind++) {
+                    const geometry = new THREE.BoxGeometry(0.2, 40, 0.2);
+                    const material = new THREE.MeshBasicMaterial({
+                        color: 0x00ffff,
+                    });
+
+                    const cube = new THREE.Mesh(geometry, material);
+                    cube.position.z = ind / 2 - 40;
+                    cube.position.x = ind / 4 - 5;
+                    cube.rotation.z = radians(ind * 2);
+                    scene.add(cube);
+                }
+
+                // RENDER SCENE WITH EFFECT
+                renderer = new THREE.WebGLRenderer();
+                renderer.setPixelRatio(window.devicePixelRatio);
+                effect = new AnaglyphEffect(renderer);
+                effect.setSize(width, height);
+                container.appendChild(renderer.domElement);
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                // ------- ANIMATE START ------- //
+
+                // SET CAMERA POS
+                camera.position.x = cameraparams.x;
+                camera.position.y = cameraparams.y;
+                camera.position.z = cameraparams.z;
+
+                camera.rotation.x = cameraparams.rz;
+                camera.rotation.y = cameraparams.ry;
+                camera.rotation.z = cameraparams.rz;
+
+                // -------- ANIMATE END -------- //
+                effect.render(scene, camera);
+            }
+        </script>
+    </body>
+</html>
