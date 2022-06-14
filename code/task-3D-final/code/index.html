@@ -115,7 +115,6 @@
                     console.log(e.code);
                 }
 
-                camera.lookAt(0, 0, 0);
                 camera.focalLength = 3;
 
                 // DRAW CUBES
@@ -128,7 +127,7 @@
                     const cube = new THREE.Mesh(geometry, material);
                     cube.position.z = ind / 2 - 40;
                     cube.position.x = ind / 4 - 5;
-                    cube.rotation.z = radians(ind * 2);
+                    cube.rotation.z = radians(ind * 20);
                     scene.add(cube);
                 }
 
@@ -152,6 +151,12 @@
                 camera.rotation.x = cameraparams.rz;
                 camera.rotation.y = cameraparams.ry;
                 camera.rotation.z = cameraparams.rz;
+
+                camera.lookAt(
+                    0 + camera.rotation.x,
+                    0 + camera.rotation.y,
+                    0 + camera.rotation.z
+                );
 
                 // -------- ANIMATE END -------- //
                 effect.render(scene, camera);
