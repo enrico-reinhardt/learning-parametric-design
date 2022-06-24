@@ -34,22 +34,23 @@
             import * as THREE from 'three';
             import { AnaglyphEffect } from './jsm/effects/AnaglyphEffect.js';
 
+            // DEGREES TO RADIANS
+            function radians(degrees) {
+                return (degrees * Math.PI) / 180;
+            }
+
             // GLOBAL VAR
             let container;
             let camera;
-            let cameraparams = { x: 0, y: 0, z: 0, rx: 0, ry: 0, rz: 0 };
+            let cameraparams = { x: 0, y: 0, z: 50, rx: 0, ry: 0, rz: 0 };
             let scene;
             let renderer;
             let effect;
             const width = window.innerWidth;
             const height = window.innerHeight;
+            const outer = 50;
             const mouseX = 0;
             const mouseY = 0;
-
-            // DEGREES TO RADIANS
-            function radians(degrees) {
-                return (degrees * Math.PI) / 180;
-            }
 
             // RUN ANIMATION
             init();
@@ -68,12 +69,13 @@
                     0.01,
                     100
                 );
+                camera.focalLength = 3;
 
-                // ON MOUSEMOVE
                 event = window.event;
                 document.addEventListener('mousemove', (event) => {
-                    camera.position.z = event.screenX / 100 - 40;
-                    camera.position.y = event.screenY / 100 - 20;
+                    // cameraparams.z = event.screenX / height;
+                    cameraparams.x = (event.screenX * 80) / width / 2;
+                    cameraparams.y = (event.screenY * 80) / height / 2;
                 });
 
                 // ON KEYDOWN
@@ -81,61 +83,68 @@
                 function logKey(e) {
                     // ARROWS
                     if (e.code === 'ArrowUp') {
-                        cameraparams.y += 0.5;
+                        cameraparams.x += 0.5;
                     }
-
                     if (e.code === 'ArrowDown') {
-                        cameraparams.y -= 0.5;
+                        cameraparams.x -= 0.5;
                     }
-
                     if (e.code === 'ArrowRight') {
                         cameraparams.z += 0.5;
                     }
-
                     if (e.code === 'ArrowLeft') {
                         cameraparams.z -= 0.5;
                     }
-
                     // WASD
                     if (e.code === 'KeyW') {
                         cameraparams.ry += radians(10);
                     }
-
                     if (e.code === 'KeyS') {
                         cameraparams.ry -= radians(10);
                     }
-
                     if (e.code === 'KeyA') {
                         cameraparams.rx += radians(10);
                     }
-
                     if (e.code === 'KeyD') {
                         cameraparams.rx -= radians(10);
                     }
-                    console.log(e.code);
                 }
 
-                camera.focalLength = 3;
-
-                // DRAW CUBES
-                for (let ind = 0; ind < 100; ind++) {
-                    const geometry = new THREE.BoxGeometry(0.2, 40, 0.2);
-                    const material = new THREE.MeshBasicMaterial({
-                        color: 0x00ffff,
+                const cubesInitial = [];
+                for (let index = 0; index < 40; index++) {
+                    cubesInitial.push({
+                        w: 80 + 10 * Math.random(),
+                        h: 1,
+                        r: radians(12.5 * index),
                     });
-
-                    const cube = new THREE.Mesh(geometry, material);
-                    cube.position.z = ind / 2 - 40;
-                    cube.position.x = ind / 4 - 5;
-                    cube.rotation.z = radians(ind * 20);
-                    scene.add(cube);
                 }
+                for (let ind = 0; ind < cubesInitial.length; ind++) {
+                    const cubeGeo = new THREE.BoxBufferGeometry(
+                        cubesInitial[ind].w,
+                        1,
+                        2
+                    );
+                    const cubeMat = new THREE.MeshPhongMaterial({
+                        color: '#fff',
+                    });
+                    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+                    mesh.position.set(0, ind - 20, 0);
+
+                    mesh.rotation.y = cubesInitial[ind].r;
+
+                    scene.add(mesh);
+                }
+
+                scene.add(new THREE.HemisphereLight(0xffffff, 0x0f179f));
+                var light = new THREE.DirectionalLight(0xffffff, 0.2);
+                light.position.set(150, 100, 50);
+                scene.add(light);
 
                 // RENDER SCENE WITH EFFECT
                 renderer = new THREE.WebGLRenderer();
                 renderer.setPixelRatio(window.devicePixelRatio);
                 effect = new AnaglyphEffect(renderer);
                 effect.setSize(width, height);
+                // renderer.setSize(width, height);
                 container.appendChild(renderer.domElement);
             }
 
@@ -152,14 +161,11 @@
                 camera.rotation.y = cameraparams.ry;
                 camera.rotation.z = cameraparams.rz;
 
-                camera.lookAt(
-                    0 + camera.rotation.x,
-                    0 + camera.rotation.y,
-                    0 + camera.rotation.z
-                );
+                camera.lookAt(0, 0, 0);
 
                 // -------- ANIMATE END -------- //
                 effect.render(scene, camera);
+                // renderer.render(scene, camera);
             }
         </script>
     </body>
