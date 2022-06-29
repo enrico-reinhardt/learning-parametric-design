@@ -48,9 +48,12 @@
             let effect;
             const width = window.innerWidth;
             const height = window.innerHeight;
+            const widthhalf = width / 2;
+            const heighthalf = height / 2;
             const outer = 50;
             const mouseX = 0;
             const mouseY = 0;
+            const cubecount = 150;
 
             // RUN ANIMATION
             init();
@@ -110,24 +113,24 @@
                 }
 
                 const cubesInitial = [];
-                for (let index = 0; index < 40; index++) {
+                for (let index = 0; index < cubecount; index++) {
                     cubesInitial.push({
-                        w: 80 + 10 * Math.random(),
-                        h: 1,
-                        r: radians(12.5 * index),
+                        w: 10,
+                        h: 0.2,
+                        r: radians(Math.random() * 10 * index),
                     });
                 }
                 for (let ind = 0; ind < cubesInitial.length; ind++) {
                     const cubeGeo = new THREE.BoxBufferGeometry(
                         cubesInitial[ind].w,
-                        1,
-                        2
+                        cubesInitial[ind].h,
+                        4
                     );
                     const cubeMat = new THREE.MeshPhongMaterial({
                         color: '#fff',
                     });
                     const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-                    mesh.position.set(0, ind - 20, 0);
+                    mesh.position.set(0, ind - cubesInitial.length, 0);
 
                     mesh.rotation.y = cubesInitial[ind].r;
 
@@ -166,6 +169,12 @@
                 // -------- ANIMATE END -------- //
                 effect.render(scene, camera);
                 // renderer.render(scene, camera);
+            }
+
+            window.addEventListener('resize', onWindowResize, false);
+            function onWindowResize() {
+                effect.setSize(width, height);
+                return;
             }
         </script>
     </body>
