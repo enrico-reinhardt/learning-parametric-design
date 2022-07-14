@@ -132,7 +132,7 @@ main {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/code/task-3D-final/assets/chevron.svg');
+    background-image: url('../assets/chevron.svg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
