@@ -19,9 +19,9 @@
                 </h1>
                 <p class="accent1">
                     Setzen Sie Ihre <i class="red">3</i
-                    ><i class="cyan">D</i>-Brille auf
+                    ><i class="cyan">D</i>-Brille auf.
                 </p>
-                <button id="start" onclick="start()">Experience Starten</button>
+                <button id="start">Experience Starten</button>
                 <p class="credit">
                     <a href="https://github.com/enrico-reinhardt/"
                         >Enrico Reinhardt</a
@@ -133,10 +133,8 @@
 
                 let currentpos = 0;
                 let atx = 0;
-
                 // SET CAMERA POS
                 function setcamerapos(currentobject) {
-                    console.log(currentobject);
                     switch (currentobject) {
                         case 1:
                             currentpos = 0;
@@ -160,7 +158,6 @@
                 }
 
                 document.addEventListener('mousemove', (event) => {
-                    console.log();
                     const mouseX = event.screenX;
                     const mouseY = event.screenY;
                     const offsetY = (widthhalf - mouseY) / 32;
@@ -219,20 +216,19 @@
 
                 // OBJECT 2
                 const conesInitial = [];
-                const conecount = 300;
+                const conecount = 350;
                 for (let index = 0; index < conecount; index++) {
                     conesInitial.push({
-                        w: 10 + 0.5 * Math.random(),
+                        w: 14 + 0.75 * Math.random(),
                         h: 0.1,
                         d: 0.1,
                         r: radians(12.5 * index),
                     });
                 }
+                const coneMat = new THREE.MeshPhongMaterial({
+                    color: '#fff',
+                });
                 for (let ind = 0; ind < conesInitial.length; ind++) {
-                    const coneMat = new THREE.MeshPhongMaterial({
-                        color: '#fff',
-                    });
-
                     const coneGeo = new THREE.ConeGeometry(
                         conesInitial[ind].h,
                         conesInitial[ind].w,
@@ -253,23 +249,22 @@
                 for (let index = 0; index < ballcount; index++) {
                     ballsInitial.push({
                         w: index,
-                        h: 0.2,
+                        h: 0.4,
                         d: 0.1,
                         offset: 10,
                         r: radians(12.5 * index),
                     });
                 }
+                const ballMat = new THREE.MeshPhongMaterial({
+                    color: '#fff',
+                });
                 for (let indz = 0; indz < ballsInitial.length; indz++) {
                     for (let indy = 0; indy < ballsInitial.length; indy++) {
                         for (let indx = 0; indx < ballsInitial.length; indx++) {
-                            const ballMat = new THREE.MeshPhongMaterial({
-                                color: '#fff',
-                            });
-
                             const ballGeo = new THREE.SphereGeometry(
                                 ballsInitial[indx].h,
                                 ballsInitial[indx].h,
-                                30
+                                0
                             );
 
                             const ball = new THREE.Mesh(ballGeo, ballMat);
@@ -286,8 +281,8 @@
                 // GLOBAL SCENE
                 scene.add(
                     new THREE.HemisphereLight(
-                        'hsla(180,25%,20%,0.5)',
-                        'hsla(180,75%,20%,0.5)'
+                        'hsl(180,25%,20%)',
+                        'hsl(180,75%,20%)'
                     )
                 );
                 var light = new THREE.DirectionalLight(0xffffff, 0.5);
