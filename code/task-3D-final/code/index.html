@@ -131,6 +131,19 @@
                     // return currentobject;
                 });
 
+                var timeout;
+                document.onmousemove = function () {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        document
+                            .querySelector('.start')
+                            .classList.remove('hidden');
+                        document
+                            .querySelector('.controls')
+                            .classList.add('hidden');
+                    }, 10000);
+                };
+
                 let currentpos = 0;
                 let atx = 0;
                 // SET CAMERA POS
